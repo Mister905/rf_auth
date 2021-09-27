@@ -1,0 +1,303 @@
+* Initialize front end / back end directories
+
+npx create-react-app client
+
+mkdir api
+
+
+* Create and Activate Virtual Environment
+
+cd api
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+
+* Deactivate Virtual Environment
+
+deactivate
+
+
+* Install python modules
+* If python-dotenv is installed, running the flask command will set environment variables defined in the files .env and .flaskenv
+
+~/rfa/api
+venv ❯ pip install flask python-dotenv 
+
+
+* Flask imports the application from the place indicated by the FLASK_APP environment variable. 
+To avoid having to manually set this variable every time, create a .flaskenv file, which Flask automatically 
+imports into the environment on startup if it finds the python-dotenv package installed.
+
+~/rfa/api
+venv ❯ touch .flaskenv
+
+FLASK_APP=run.py
+FLASK_ENV=development
+JWT_SECRET_KEY=YDwzJwu7bnMRE4ZS
+
+
+* Initialize Flask app
+
+~/rfa/api
+venv ❯ touch __init__.py
+
+
+* To complete the application, you need to have a Python script at the top-level that defines the Flask application instance. Let's call this script run.py, and define it as a single line that imports the application instance
+
+~/rfa/api
+venv ❯ touch run.py
+
+
+* At this point this basic Flask project is complete. To make sure that it is working well you can start it
+
+flask run
+
+
+* React Proxy Configuration
+
+* The React project can be configured to redirect any requests it receives on its port 3000 that it does not understand into another server. 
+* This is configured simply by adding a proxy key at the bottom package.json:
+
+/rfa/client/package.json
+
+"proxy": "http://localhost:5000"
+
+"scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start_api": "cd ../api && venv/bin/flask run --no-debugger",
+},
+
+* Configure Project for Git
+
+* Remove .git folder from create-react-app
+
+~/rfa/client
+venv ❯ sudo rm -rf .git
+
+~/rfa/api
+venv ❯ touch .gitignore
+
+cd ..
+
+~/rfa
+venv ❯ echo "# rfa" >> README.md                                                                                                                                            
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:Mister905/rfa.git
+git push -u origin main
+
+
+~/rfa
+venv ❯ git status                                                                                                                                                     ✭main 
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        api/
+        client/
+        walkthrough.txt
+
+
+~/rfa
+venv ❯ git add .
+
+
+~/rfa
+venv ❯ git commit -m "Initial commit" 
+
+
+~/rfa
+venv ❯ git push origin main
+
+
+* Running the Combined Project
+
+cd client
+
+* Start Front End
+
+yarn start
+
+* Start Back End
+
+yarn start_api
+
+
+* pip freeze and install
+
+* You can freeze requirements on one machine and then later on a different machine or on a clean environment 
+* You'll get the an identical environment with the exact same dependencies installed as you had in the original 
+* environment where you generated the frozen-requirements.txt
+
+pip freeze > frozen-requirements.txt
+
+pip install -r frozen-requirements.txt
+
+
+List installed packages, including editables.
+
+python -m pip list
+
+"pip show flask" to check the installation location of the module "flask":
+
+pip show flask                                                                                                                                   ✹ ✭main 
+Name: Flask
+Version: 1.1.2
+Summary: A simple framework for building complex web applications.
+Home-page: https://palletsprojects.com/p/flask/
+Author: Armin Ronacher
+Author-email: armin.ronacher@active-4.com
+License: BSD-3-Clause
+Location: /home/james/rfa/api/venv/lib/python3.7/site-packages
+Requires: click, Jinja2, Werkzeug, itsdangerous
+Required-by: Flask-Cors
+
+
+Set Interpeter PAth in VS Code to venv
+https://code.visualstudio.com/docs/python/environments
+
+/home/james/rfa_auth/api/venv/bin/python3
+
+
+* Cloning repo and initializing repo
+
+cd api
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+cd ..
+
+pip install -r frozen-requirements.txt
+
+cd client
+
+yarn install
+
+
+* Install Client packages
+
+~/rfa/client
+venv ❯ yarn add axios react-router-dom redux react-redux redux-thunk formik yup dayjs node-sass materialize-css@next
+
+* Configure Client Folder Structure
+
+~/rfa/client/src
+venv ❯ rm App.css App.test.js index.css logo.svg reportWebVitals.js setupTests.js
+
+~/rfa/client/src 
+venv ❯ mkdir actions assets components reducers
+
+
+* Configure Sass
+
+~/rfa/client/src 
+venv ❯ touch index.scss
+
+
+* Configure reducer index
+
+~/rfa/client/src/reducers
+venv ❯ touch index.js
+
+~/rfa/client/src/reducers
+venv ❯ touch test_reducer.js
+
+
+* Configure action types
+
+~/rfa/client/src/actions
+venv ❯ touch types.js test.js
+
+
+* Create Components and Routes
+
+~/rfa/client/src
+❯ mkdir ./components/test
+
+~/rfa/client/src
+❯ touch ./components/test/Test.js
+
+~/rfa/client/src
+❯ touch ./components/test/Test.scss
+
+
+* ES7 React/Redux/GraphQL/React-Native snippets
+
+* Create functional arrow component
+rafce tab
+
+
+* Enable Emmet support for JSX in Visual Studio Code | React
+
+File -> Preferences -> Settings -> Extensions -> Emmet -> Edit in settings.json -> Include Languages
+
+{
+   "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+   }
+}
+
+
+
+Flask-SQLAlchemy, an extension that provides a Flask-friendly wrapper to the popular SQLAlchemypackage, which is an Object Relational Mapper or ORM. ORMs allow applications to manage a database using high-level entities such as classes, objects and methods instead of tables and SQL. The job of the ORM is to translate the high-level operations into database commands.
+
+venv ❯ pip install flask-sqlalchemy
+
+
+Flask-Migrate, which is actually one created by yours truly. This extension is a Flask wrapper for Alembic, a database migration framework for SQLAlchemy. Working with database migrations adds a bit of work to get a database started, but that is a small price to pay for a robust way to make changes to your database in the future.
+
+venv ❯ pip install flask-migrate
+
+
+SQLite databases are the most convenient choice for developing small applications, sometimes even not so small ones, as each database is stored in a single file on disk and there is no need to run a database server like MySQL and PostgreSQL.
+
+
+
+Flask Migrate Config
+
+https://courses.miguelgrinberg.com/courses/336779/lectures/5186943
+
+
+(venv) ~/rf_auth/api flask db init
+
+
+
+Flask migrations
+https://flask-migrate.readthedocs.io/en/latest/
+https://courses.miguelgrinberg.com/courses/336779/lectures/5186947
+
+flask db migrate -m "users table"
+
+flask db upgrade
+
+flask db downgrade
+
+"If you are storing your project in source control, also remember to add the new migration script to it."
+
+
+Flask Marsmallow
+venv ❯ pip install flask-marshmallow
+
+marshmallow-sqlalchemy
+venv ❯ pip install marshmallow-sqlalchemy
+
+Flask JWT Extended
+venv ❯ pip install flask-jwt-extended  
+
+
+Seeding the DB
+
+flask db_create
+
+flask db_seed

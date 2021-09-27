@@ -1,0 +1,43 @@
+@import "./components/products/Products.scss";
+@import "./components/header/Header.scss";
+@import "./components/login/Login.scss";
+@import "./components/register/Register.scss";
+@import "./components/modal/Modal.scss";
+
+.custom-label {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.input-field input {
+    color: orange !important;
+} 
+
+/* label color */
+.input-field label {
+    color: rgb(170, 49, 160) !important;
+}
+/* label focus color */
+.input-field input[type]:focus + label {
+    color: rgb(59, 159, 177) !important;
+}
+/* label underline focus color */
+.input-field input[type]:focus {
+    border-bottom: 1px solid rgb(208, 230, 14) !important;
+    box-shadow: 0 1px 0 0 rgb(191, 223, 11) !important;
+}
+/* valid color */
+.input-field input[type].valid {
+    border-bottom: 1px solid #000 !important;
+    box-shadow: 0 1px 0 0 #000 !important;
+}
+/* invalid color */
+.input-field input[type].invalid {
+    border-bottom: 1px solid #000 !important;
+    box-shadow: 0 1px 0 0 #000 !important;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #000 !important;
+}
+ 
