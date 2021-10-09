@@ -3,27 +3,39 @@ import axios from "axios";
 import set_auth_token from "../utils/set_auth_token";
 
 export const load_active_user = () => async (dispatch) => {
+
   if (localStorage.token) {
+    console.log(localStorage.token);
     set_auth_token(localStorage.token);
   }
 
   try {
 
-    console.log(localStorage.token);
+    // const res = await axios.get("/api/products");
 
     const res = await axios.get("/api/auth/load_active_user");
 
-    console.log(res);
-
-    dispatch({
-      type: USER_LOADED,
-      payload: res.data,
-    });
+    console.log(res.data);
   } catch (error) {
-    dispatch({
-      type: AUTH_ERROR,
-    });
+    console.log(error);
   }
+
+  // try {
+
+  //   const res = await axios.get("/api/auth/load_active_user");
+
+  //   console.log(res);
+
+  //   dispatch({
+  //     type: USER_LOADED,
+  //     payload: res.data,
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  //   dispatch({
+  //     type: AUTH_ERROR,
+  //   });
+  // }
 };
 
 export const login_user = (form_data, history) => async (dispatch) => {
@@ -48,7 +60,6 @@ export const login_user = (form_data, history) => async (dispatch) => {
         },
       });
     } else {
-      history.push("/");
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -63,6 +74,8 @@ export const login_user = (form_data, history) => async (dispatch) => {
           modal_confirmation: "Ok",
         },
       });
+
+      history.push("/");
     }
   } catch (error) {
     dispatch({

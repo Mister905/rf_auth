@@ -8,12 +8,13 @@ from werkzeug.security import generate_password_hash
 
 
 @bp.route("/api/auth/load_active_user", methods=["GET"])
-@jwt_required
+@jwt_required()
 def load_active_user():
 
     # We can now access our sqlalchemy User object via `current_user`.
     # current_user = get_jwt_identity()
-    return "Foo"
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 
     # user = User.query.filter_by(email=get_jwt_identity()).first() # Filter DB by token (email)
     # new_about = About(description=description, user=user)

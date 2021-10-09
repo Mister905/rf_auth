@@ -9,6 +9,7 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 
 @bp.route("/api/products", methods=["GET"])
+# @jwt_required()
 def get_products():
     products_list = Product.query.all()
     result = products_schema.dump(products_list)

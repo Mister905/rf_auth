@@ -13,9 +13,12 @@ import Register from "./components/register/Register";
 import { load_active_user } from "./actions/auth";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+
+  componentDidMount() {
+
     this.props.load_active_user();
+
+    console.log("DERP");
   }
 
   render() {
@@ -28,6 +31,7 @@ class App extends Component {
           <Route exact path="/" component={Products} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/products" component={Products} />
         </Switch>
       </div>
     );

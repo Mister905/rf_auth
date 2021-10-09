@@ -6,9 +6,15 @@ import { display_modal } from "../../actions/modal";
 import { withRouter } from "react-router-dom";
 
 class Products extends Component {
+
   display_modal = () => {
     this.props.display_modal("Test Title", "Test Body", "Confirm", "Cancel");
   };
+
+  componentDidMount() {
+    console.log("TEST");
+    // this.props.get_products();
+  }
 
   render() {
     return (
