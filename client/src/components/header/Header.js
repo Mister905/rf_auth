@@ -5,7 +5,6 @@ import { compose } from "redux";
 
 class Header extends Component {
   render() {
-    console.log(this.props.auth);
     const { is_authenticated } = this.props.auth;
     return (
       <nav>

@@ -2,32 +2,27 @@ from flask_jwt_extended.utils import create_refresh_token
 from api.auth import bp
 from flask import json, request, jsonify
 from api.models import User
+from api.schemas import UserSchema
 from api import db
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required
+
+user_schema = UserSchema()
 
 
 @bp.route("/api/auth/load_active_user", methods=["GET"])
 @jwt_required()
 def load_active_user():
-
-    # We can now access our sqlalchemy User object via `current_user`.
-    # current_user = get_jwt_identity()
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
-
-    # user = User.query.filter_by(email=get_jwt_identity()).first() # Filter DB by token (email)
-    # new_about = About(description=description, user=user)
-
-#     router.get("/active_user", auth, async (req, res) => {
-#   try {
-#     const user = await User.findById(req.user.id).select("-password");
-#     res.send(user);
-#   } catch (error) {
-#     console.log(error.message);
-#     res.status(500).send("Server Error");
-#   }
-# }); 
-
+    
+    current_user_id = get_jwt_identity()
+    
+    user = db.session.query(*[c for c in User.__table__.c if c.name != "password_hash"]).filter_by(id=current_user_id).first()
+    
+    if user:
+        serialized_user = user_schema.dump(user)
+        return jsonify({
+            "success": 1,
+            "user": serialized_user
+        })
      
 
 @bp.route("/api/auth/login", methods=["POST"])

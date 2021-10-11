@@ -16,12 +16,12 @@ db = SQLAlchemy()
 ma = Marshmallow()
 jwt = JWTManager()
 
-# @jwt.expired_token_loader
-# def expired_token_callback(jwt_header, jwt_payload):
-#     return jsonify({
-#         "message": "Access token expired",
-#         "error": 1
-#     }), 401
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({
+        "message": "Access token expired",
+        "error": 1
+    }), 401
 
 def create_app():
     

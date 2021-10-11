@@ -11,22 +11,24 @@ products_schema = ProductSchema(many=True)
 @bp.route("/api/products", methods=["GET"])
 @jwt_required()
 def get_products():
-    products_list = Product.query.all()
-    result = products_schema.dump(products_list)
-    return jsonify(result)
+    product_list = Product.query.all()
+    serialized_product_list = products_schema.dump(product_list)
+    return jsonify(serialized_product_list)
+
   
 @bp.route("/api/products/<int:id>", methods=["GET"])
 @jwt_required()
 def get_product(id: int):
     product = Product.query.filter_by(id=id).first()
     if product:
-        result = product_schema.dump(product)
-        return jsonify(result)
+        serialized_product = product_schema.dump(product)
+        return jsonify(serialized_product)
     else:
         return jsonify({
             "error": 1,
             "message": "Product not found."
         }), 404
+        
     
 @bp.route("/api/products", methods=["POST"])
 @jwt_required(fresh=True)
@@ -36,7 +38,7 @@ def create_product():
     if test:
         return jsonify({
             "error": 1,
-            "message": "There is already a product with that name assigned."
+            "message": "A product with that name already exists."
         }), 409
     else:
         type = request.json["type"]
@@ -47,13 +49,16 @@ def create_product():
                             type=type,
                             weight=weight,
                             inventory_count=inventory_count)
+        
+        serialized_product = product_schema.dump(new_product)
 
         db.session.add(new_product)
         db.session.commit()
         
         return jsonify({
             "success": 1,
-            "message": "Product creation successful."
+            "message": "Product creation successful.",
+            "product": serialized_product
         }), 201
     
     

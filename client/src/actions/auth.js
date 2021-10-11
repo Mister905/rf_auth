@@ -5,14 +5,11 @@ import set_auth_token from "../utils/set_auth_token";
 export const load_active_user = () => async (dispatch) => {
 
   if (localStorage.token) {
-    console.log(localStorage.token);
     set_auth_token(localStorage.token);
   }
 
   try {
-
-    // const res = await axios.get("/api/products");
-
+    
     const res = await axios.get("/api/auth/load_active_user");
 
     console.log(res.data);
@@ -60,7 +57,6 @@ export const login_user = (form_data, history) => async (dispatch) => {
         },
       });
     } else {
-
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
