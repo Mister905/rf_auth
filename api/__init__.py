@@ -3,6 +3,7 @@
 # """
 
 from flask import Flask
+from flask.json import jsonify
 from flask_jwt_extended.jwt_manager import JWTManager
 from api.config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -14,6 +15,13 @@ from werkzeug.security import generate_password_hash
 db = SQLAlchemy()
 ma = Marshmallow()
 jwt = JWTManager()
+
+# @jwt.expired_token_loader
+# def expired_token_callback(jwt_header, jwt_payload):
+#     return jsonify({
+#         "message": "Access token expired",
+#         "error": 1
+#     }), 401
 
 def create_app():
     
@@ -27,10 +35,10 @@ def create_app():
     
     jwt.init_app(app)
     
-    from api.models import User, Product
-    
     migrate = Migrate(app, db)
      
+    from api.models import User, Product
+
     from api.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
     
@@ -74,5 +82,6 @@ def create_app():
 
         db.drop_all()
         print("Database dropped!")
+
     
     return app

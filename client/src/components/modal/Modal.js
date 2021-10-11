@@ -29,8 +29,7 @@ class Modal extends Component {
   }
 
   render() {
-    const { modal_title, modal_body, modal_confirmation, modal_decline } =
-      this.props.modal;
+    const { modal_title, modal_body, modal_confirmation, modal_decline } = this.props.modal;
     return (
       <div>
         <div

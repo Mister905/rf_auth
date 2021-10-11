@@ -5,6 +5,8 @@ import { compose } from "redux";
 
 class Header extends Component {
   render() {
+    console.log(this.props.auth);
+    const { is_authenticated } = this.props.auth;
     return (
       <nav>
         <div className="nav-wrapper">
@@ -13,7 +15,11 @@ class Header extends Component {
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
-              <Link to={"/login"}>Login</Link>
+              {is_authenticated ? (
+                <Link to={"/logout"}>Logout</Link>
+              ) : (
+                <Link to={"/login"}>Login</Link>
+              )}
             </li>
           </ul>
         </div>
@@ -23,7 +29,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  test: state.test,
+  auth: state.auth,
 });
 
 export default compose(connect(mapStateToProps, null), withRouter)(Header);
