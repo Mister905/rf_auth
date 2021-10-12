@@ -59,12 +59,17 @@ def login():
 
     else:
         access_token = create_access_token(identity=user.id, fresh=True)
-        
+        user = db.session.query(*[c for c in User.__table__.c if c.name != "password_hash"]).filter_by(email=email).first()
+        serialized_user = user_schema.dump(user)
         return jsonify({
             "success": 1,
             "access_token": access_token,
-            "user_id": user.id
+            "user": serialized_user
         })  
+
+        
+        
+        
     
 
 @bp.route("/api/auth/register", methods=["POST"])

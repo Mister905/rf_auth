@@ -29,7 +29,7 @@ class Products extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  products: state.products,
+  products: state.products
 });
 
 export default compose(

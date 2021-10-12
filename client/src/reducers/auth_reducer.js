@@ -7,13 +7,13 @@ import {
 } from "../actions/types";
 
 const initial_state = {
-  token: localStorage.getItem("token"),
+  access_token: localStorage.getItem("token"),
   is_authenticated: false,
   loading_user: true,
-  user_id: null,
+  user: null,
 };
 
-export default function(state = initial_state, action) {
+export default function (state = initial_state, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -22,16 +22,16 @@ export default function(state = initial_state, action) {
         ...state,
         is_authenticated: true,
         loading_user: false,
-        user: payload,
+        user: payload.user,
       };
     case LOGIN_SUCCESS:
-      const { token, user_id } = payload;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", payload.access_token);
       return {
         ...state,
-        token,
+        access_token: payload.access_token,
         is_authenticated: true,
-        user_id: user_id
+        loading_user: false,
+        user: payload.user,
       };
     case LOGIN_FAIL:
     case AUTH_ERROR:
@@ -39,9 +39,9 @@ export default function(state = initial_state, action) {
       localStorage.removeItem("token");
       return {
         ...state,
-        token: null,
+        access_token: null,
         is_authenticated: false,
-        user_id: null,
+        user: null,
         loading_user: true,
       };
     default:

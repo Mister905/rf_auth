@@ -1,38 +1,30 @@
-import { DISPLAY_MODAL, LOGIN_SUCCESS, USER_LOADED, AUTH_ERROR } from "./types";
+import {
+  DISPLAY_MODAL,
+  LOGIN_SUCCESS,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGOUT,
+} from "./types";
 import axios from "axios";
 import set_auth_token from "../utils/set_auth_token";
 
 export const load_active_user = () => async (dispatch) => {
-
   if (localStorage.token) {
     set_auth_token(localStorage.token);
   }
 
   try {
-    
     const res = await axios.get("/api/auth/load_active_user");
 
-    console.log(res.data);
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: AUTH_ERROR,
+    });
   }
-
-  // try {
-
-  //   const res = await axios.get("/api/auth/load_active_user");
-
-  //   console.log(res);
-
-  //   dispatch({
-  //     type: USER_LOADED,
-  //     payload: res.data,
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  //   dispatch({
-  //     type: AUTH_ERROR,
-  //   });
-  // }
 };
 
 export const login_user = (form_data, history) => async (dispatch) => {
@@ -71,7 +63,7 @@ export const login_user = (form_data, history) => async (dispatch) => {
         },
       });
 
-      history.push("/");
+      history.push("/products");
     }
   } catch (error) {
     dispatch({
@@ -127,4 +119,9 @@ export const register_user = (form_data, history) => async (dispatch) => {
       },
     });
   }
+};
+
+export const logout_user = (history) => async (dispatch) => {
+  dispatch({ type: LOGOUT });
+  history.push("/");
 };

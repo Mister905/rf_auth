@@ -15,26 +15,27 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import { load_active_user } from "./actions/auth";
 
 class App extends Component {
-
   componentDidMount() {
     this.props.load_active_user();
   }
 
   render() {
     const { display_modal } = this.props.modal;
+    const { is_authenticated } = this.props.auth;
+
     return (
       <div className="App">
         <Header />
         {display_modal && <Modal />}
         <Switch>
-          <Route exact path="/" component={Landing} />
+          <Route
+            exact
+            path="/"
+            component={ is_authenticated ? Products : Landing }
+          />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <PrivateRoute
-            exact
-            path="/products"
-            component={Products}
-          />
+          <PrivateRoute exact path="/products" component={Products} />
         </Switch>
       </div>
     );
@@ -42,7 +43,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  modal: state.modal,
+  auth: state.auth,
+  modal: state.modal
 });
 
 export default compose(
