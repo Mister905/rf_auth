@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { get_products, clear_products } from "../../actions/products";
+import {
+  get_products,
+  clear_products,
+  delete_product,
+} from "../../actions/products";
 import { display_modal } from "../../actions/modal";
 import { Link, withRouter } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
@@ -13,15 +17,27 @@ class Products extends Component {
 
   componentDidMount() {
     this.props.clear_products();
-  }
 
-  componentDidUpdate(prevProps) {
-
-    if (this.props.auth.is_authenticated !== prevProps.auth.is_authenticated) {
+    if (this.props.auth.is_authenticated) {
       // Simulate Async
       setTimeout(this.props.get_products, 5000);
     }
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.is_authenticated !== prevProps.auth.is_authenticated) {
+      // Simulate Async
+      setTimeout(this.props.get_products, 5000);
+    }
+
+    if (this.props.products.products !== prevProps.products.products) {
+      this.props.get_products();
+    }
+  }
+
+  handle_delete_product = (product_id) => {
+    this.props.delete_product(product_id);
+  };
 
   output_products = () => {
     const { product_list } = this.props.products;
@@ -34,14 +50,29 @@ class Products extends Component {
               <div className="row">
                 <div className="col m6">{product.name}</div>
                 <div className="col m6">
-                  <Link to={`/update_product/${product.id}`} className="btn">
-                    Update Product
-                  </Link>
+                  <div className="row">
+                    <div className="col m6">
+                      <Link
+                        to={`/update_product/${product.id}`}
+                        className="btn"
+                      >
+                        Update
+                      </Link>
+                    </div>
+                    <div className="col m6">
+                      <button
+                        className="btn"
+                        onClick={(e) => this.handle_delete_product(product.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </li>
           );
-        })}
+        }, this)}
       </ul>
     );
   };
@@ -49,28 +80,26 @@ class Products extends Component {
   render() {
     const { loading_products } = this.props.products;
     return (
-      <div className="container">
+      <div className="container mt-50">
         <div className="row">
-          <div className="col m12">Products</div>
+          <div className="col m4 offset-m8">
+            <div className="row">
+              <div className="col m6">
+                <button onClick={this.display_modal} className="btn">
+                  Display Modal
+                </button>
+              </div>
+              <div className="col m6">
+                <Link to={"/create_product"} className="btn">
+                  Create Product
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="row">
-          <div className="col m6">
+          <div className="col m6 offset-m3 align-center">
             {loading_products ? <Preloader /> : this.output_products()}
-          </div>
-        </div>
-        <div className="row">
-          <div className="col m12">
-            <button onClick={this.display_modal} className="btn">
-              Display Modal
-            </button>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col m12">
-            <Link to={"/create_product"} className="btn">
-              Create Product
-            </Link>
           </div>
         </div>
       </div>
@@ -84,6 +113,11 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, { get_products, clear_products, display_modal }),
+  connect(mapStateToProps, {
+    get_products,
+    clear_products,
+    display_modal,
+    delete_product,
+  }),
   withRouter
 )(Products);

@@ -4,17 +4,12 @@ import { compose } from "redux";
 import { Link, withRouter } from "react-router-dom";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { get_product, update_product } from "../../actions/products";
+import { get_product, update_product, clear_product } from "../../actions/products";
 import Preloader from "../preloader/Preloader";
 
-class Update_Product extends Component {
-  componentDidMount() {
-    this.props.get_product(this.props.match.params.id);
-  }
-
+class Update_Product_Form extends Component {
   render() {
     const { values, errors, touched } = this.props;
-    const { loading_product } = this.props.products;
     return (
       <div className="container">
         <div className="row">
@@ -22,96 +17,90 @@ class Update_Product extends Component {
             <h1>Update Product</h1>
           </div>
         </div>
-        {loading_product ? (
-          <Preloader />
-        ) : (
-          <Form>
-            <div className="row">
-              <div className="input-field col m4 offset-m4">
-                <label htmlFor="name" className="active custom-label">
-                  Name
-                </label>
-                <Field
-                  id="name"
-                  type="text"
-                  name="name"
-                  className={errors.name ? "invalid" : ""}
-                />
-                {errors.name && (
-                  <span className="custom-helper-error">{errors.name}</span>
-                )}
-              </div>
+        <Form>
+          <div className="row">
+            <div className="input-field col m4 offset-m4">
+              <label htmlFor="name" className="active custom-label">
+                Name
+              </label>
+              <Field
+                id="name"
+                type="text"
+                name="name"
+                className={errors.name ? "invalid" : ""}
+              />
+              {errors.name && (
+                <span className="custom-helper-error">{errors.name}</span>
+              )}
             </div>
-            <div className="row">
-              <div className="input-field col m4 offset-m4">
-                <label htmlFor="type" className="active custom-label">
-                  Type
-                </label>
-                <Field
-                  id="type"
-                  type="text"
-                  name="type"
-                  className={errors.type ? "invalid" : ""}
-                />
-                {errors.type && (
-                  <span className="custom-helper-error">{errors.type}</span>
-                )}
-              </div>
+          </div>
+          <div className="row">
+            <div className="input-field col m4 offset-m4">
+              <label htmlFor="type" className="active custom-label">
+                Type
+              </label>
+              <Field
+                id="type"
+                type="text"
+                name="type"
+                className={errors.type ? "invalid" : ""}
+              />
+              {errors.type && (
+                <span className="custom-helper-error">{errors.type}</span>
+              )}
             </div>
-            <div className="row">
-              <div className="input-field col m4 offset-m4">
-                <label htmlFor="weight" className="active custom-label">
-                  Weight
-                </label>
-                <Field
-                  id="weight"
-                  type="text"
-                  name="weight"
-                  className={errors.weight ? "invalid" : ""}
-                />
-                {errors.weight && (
-                  <span className="custom-helper-error">{errors.weight}</span>
-                )}
-              </div>
+          </div>
+          <div className="row">
+            <div className="input-field col m4 offset-m4">
+              <label htmlFor="weight" className="active custom-label">
+                Weight
+              </label>
+              <Field
+                id="weight"
+                type="text"
+                name="weight"
+                className={errors.weight ? "invalid" : ""}
+              />
+              {errors.weight && (
+                <span className="custom-helper-error">{errors.weight}</span>
+              )}
             </div>
-            <div className="row">
-              <div className="input-field col m4 offset-m4">
-                <label
-                  htmlFor="inventory_count"
-                  className="active custom-label"
-                >
-                  Inventory Count
-                </label>
-                <Field
-                  id="inventory_count"
-                  type="number"
-                  name="inventory_count"
-                  className={errors.inventory_count ? "invalid" : ""}
-                />
-                {errors.inventory_count && (
-                  <span className="custom-helper-error">
-                    {errors.inventory_count}
-                  </span>
-                )}
-              </div>
+          </div>
+          <div className="row">
+            <div className="input-field col m4 offset-m4">
+              <label htmlFor="inventory_count" className="active custom-label">
+                Inventory Count
+              </label>
+              <Field
+                id="inventory_count"
+                type="number"
+                name="inventory_count"
+                className={errors.inventory_count ? "invalid" : ""}
+              />
+              {errors.inventory_count && (
+                <span className="custom-helper-error">
+                  {errors.inventory_count}
+                </span>
+              )}
             </div>
-            <div className="row">
-              <div className="col m4 offset-m4">
-                <button type="submit" className="btn right">
-                  Create
-                </button>
-              </div>
+          </div>
+          <div className="row">
+            <div className="col m4 offset-m4">
+              <button type="submit" className="btn right">
+                Update
+              </button>
             </div>
-          </Form>
-        )}
+          </div>
+        </Form>
       </div>
     );
   }
 }
 
-const FormikForm = withFormik({
+const Update_Product_HOC = withFormik({
   mapPropsToValues: (props) => {
-    const { id, name, type, weight, inventory_count } = props.products.product;
+    const { id, name, type, weight, inventory_count } =
+      props.props.products.product;
     return {
       name: name || "",
       type: type || "",
@@ -119,7 +108,6 @@ const FormikForm = withFormik({
       inventory_count: inventory_count || "",
     };
   },
-
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Name field is Required"),
     type: Yup.string().required("Type field is Required"),
@@ -128,17 +116,43 @@ const FormikForm = withFormik({
   }),
   validateOnBlur: false,
   validateOnChange: false,
+
   handleSubmit: (values, props) => {
-    console.log(values);
-    // props.props.update_product(values, props.props.history);
+    values.id = props.props.props.products.product.id;
+
+    props.props.props.update_product(values, props.props.props.history);
   },
-})(Update_Product);
+})(Update_Product_Form);
+
+class Update_Product extends Component {
+  componentDidMount() {
+    this.props.clear_product();
+    this.props.get_product(this.props.match.params.id);
+  }
+
+  render() {
+    const { loading_product } = this.props.products;
+    if (loading_product) {
+      return (
+        <div className="container mt-100">
+          <div className="row">
+            <div className="col m12 center-align">
+              <Preloader />
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return <Update_Product_HOC props={this.props} />;
+    }
+  }
+}
 
 const mapStateToProps = (state) => ({
   products: state.products,
 });
 
 export default compose(
-  connect(mapStateToProps, { get_product, update_product }),
+  connect(mapStateToProps, { get_product, update_product, clear_product }),
   withRouter
-)(FormikForm);
+)(Update_Product);

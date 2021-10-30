@@ -1,4 +1,10 @@
-import { GET_PRODUCT, GET_PRODUCTS, CLEAR_PRODUCTS } from "../actions/types";
+import {
+  GET_PRODUCT,
+  GET_PRODUCTS,
+  CLEAR_PRODUCTS,
+  CLEAR_PRODUCT,
+  DELETE_PRODUCT,
+} from "../actions/types";
 
 const initial_state = {
   product_list: null,
@@ -29,9 +35,19 @@ export default function (state = initial_state, action) {
         product_list: null,
         loading_products: true,
       };
+    case CLEAR_PRODUCT:
+      return {
+        ...state,
+        product: null,
+        loading_product: true,
+      };
+    case DELETE_PRODUCT:
+      return {
+        ...state,
+        product_list: null,
+        loading_products: true,
+      };
     default:
-      // If this reducer doesn't recognize the action type, or doesn't
-      // care about this specific action, return the existing state unchanged
       return state;
   }
 }

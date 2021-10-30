@@ -11,4 +11,6 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 export const CREATE_SUCCESS = "CREATE_SUCCESS";
 export const CREATE_ERROR = "CREATE_ERROR";
 export const CLEAR_PRODUCTS = "CLEAR_PRODUCTS";
+export const CLEAR_PRODUCT = "CLEAR_PRODUCT";
 export const GET_PRODUCT = "GET_PRODUCT";
+export const DELETE_PRODUCT = "DELETE_PRODUCT";

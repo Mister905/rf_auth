@@ -25,8 +25,6 @@ class App extends Component {
     const { display_modal } = this.props.modal;
     const { is_authenticated } = this.props.auth;
 
-    console.log(is_authenticated);
-
     return (
       <div className="App">
         <Header />

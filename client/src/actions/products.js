@@ -1,4 +1,11 @@
-import { GET_PRODUCT, GET_PRODUCTS, CLEAR_PRODUCTS, DISPLAY_MODAL } from "./types";
+import {
+  GET_PRODUCT,
+  GET_PRODUCTS,
+  CLEAR_PRODUCTS,
+  DISPLAY_MODAL,
+  CLEAR_PRODUCT,
+  DELETE_PRODUCT,
+} from "./types";
 
 import instance from "../utils/axios";
 
@@ -46,6 +53,16 @@ export const clear_products = () => async (dispatch) => {
   try {
     dispatch({
       type: CLEAR_PRODUCTS,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clear_product = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: CLEAR_PRODUCT,
     });
   } catch (error) {
     console.log(error);
@@ -113,7 +130,7 @@ export const update_product = (form_data, history) => async (dispatch) => {
         type: DISPLAY_MODAL,
         payload: {
           modal_title: "Error",
-          modal_body: "Unable to create product",
+          modal_body: "Unable to update product",
           modal_confirmation: "Ok",
         },
       });
@@ -128,12 +145,49 @@ export const update_product = (form_data, history) => async (dispatch) => {
       });
       history.push("/products");
     }
+    if (res.data.error) {
+      dispatch({
+        type: DISPLAY_MODAL,
+        payload: {
+          modal_title: "Error",
+          modal_body: "Unable to update product",
+          modal_confirmation: "Ok",
+        },
+      });
+    } else {
+    }
   } catch (error) {
     dispatch({
       type: DISPLAY_MODAL,
       payload: {
         modal_title: "Error",
         modal_body: "Unable to update product",
+        modal_confirmation: "Ok",
+      },
+    });
+  }
+};
+
+export const delete_product = (product_id) => async (dispatch) => {
+  try {
+    const res = await instance.delete(`/products/${product_id}`);
+    dispatch({
+      type: DELETE_PRODUCT,
+    });
+    dispatch({
+      type: DISPLAY_MODAL,
+      payload: {
+        modal_title: "Success",
+        modal_body: "Product successfuly deleted",
+        modal_confirmation: "OK",
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: DISPLAY_MODAL,
+      payload: {
+        modal_title: "Error",
+        modal_body: "Unable to delete product",
         modal_confirmation: "Ok",
       },
     });

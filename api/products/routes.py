@@ -70,6 +70,7 @@ def update_product():
     if product:
         product.name = request.json["name"]
         product.type = request.json["type"]
+        product.weight = request.json["weight"]
         product.inventory_count = request.json["inventory_count"]
     
         db.session.commit()
