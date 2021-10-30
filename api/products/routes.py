@@ -13,7 +13,7 @@ products_schema = ProductSchema(many=True)
 def get_products():
     product_list = Product.query.all()
     serialized_product_list = products_schema.dump(product_list)
-    return jsonify(serialized_product_list)
+    return jsonify({"product_list": serialized_product_list})
 
   
 @bp.route("/api/products/<int:id>", methods=["GET"])
@@ -22,7 +22,7 @@ def get_product(id: int):
     product = Product.query.filter_by(id=id).first()
     if product:
         serialized_product = product_schema.dump(product)
-        return jsonify(serialized_product)
+        return jsonify({"product": serialized_product})
     else:
         return jsonify({
             "error": 1,

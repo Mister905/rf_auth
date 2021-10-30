@@ -9,18 +9,18 @@ but when we render the component it has to be "Component" to let JSX know
 that we want to render a component */
 const PrivateRoute = ({
   component: Component,
-  auth: { is_authenticated, loading },
+  auth: { is_authenticated, loading_user },
   ...rest
 }) => (
   <Route
     {...rest}
-    render={(props) =>
-      !is_authenticated && !loading ? (
-        <Redirect to="/login" />
-      ) : (
-        <Component {...props} />
-      )
-    }
+    render={function (props) {
+      if (!loading_user && !is_authenticated) {
+        return <Redirect to="/login" />;
+      } else {
+        return <Component {...props} />;
+      }
+    }}
   />
 );
 

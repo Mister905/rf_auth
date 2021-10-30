@@ -5,16 +5,12 @@ import {
   AUTH_ERROR,
   LOGOUT,
 } from "./types";
-import axios from "axios";
-import set_auth_token from "../utils/set_auth_token";
+
+import instance from "../utils/axios";
 
 export const load_active_user = () => async (dispatch) => {
-  if (localStorage.token) {
-    set_auth_token(localStorage.token);
-  }
-
   try {
-    const res = await axios.get("/api/auth/load_active_user");
+    const res = await instance.get("/auth/load_active_user");
 
     dispatch({
       type: USER_LOADED,
@@ -37,7 +33,7 @@ export const login_user = (form_data, history) => async (dispatch) => {
   let request_body = JSON.stringify(form_data);
 
   try {
-    const res = await axios.post("/api/auth/login", request_body, config);
+    const res = await instance.post("/auth/login", request_body, config);
 
     if (res.data.error) {
       dispatch({
@@ -87,7 +83,7 @@ export const register_user = (form_data, history) => async (dispatch) => {
   let request_body = JSON.stringify(form_data);
 
   try {
-    const res = await axios.post("/api/auth/register", request_body, config);
+    const res = await instance.post("/auth/register", request_body, config);
 
     if (res.data.error) {
       dispatch({
