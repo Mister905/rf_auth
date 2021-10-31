@@ -6,16 +6,16 @@ import { connect } from "react-redux";
 when we pass "component" as an argument to route it has the lower case c, 
 but when we render the component it has to be "Component" to let JSX know 
 that we want to render a component */
-const PrivateRoute = ({
+const PublicRoute = ({
   component: Component,
-  auth: { is_authenticated, loading_user },
+  auth: { is_authenticated },
   ...rest
 }) => (
   <Route
     {...rest}
     render={function (props) {
-      if (loading_user || !is_authenticated) {
-        return <Redirect to="/login" />;
+      if (is_authenticated) {
+        return <Redirect to="/products" />;
       } else {
         return <Component {...props} />;
       }
@@ -27,4 +27,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(PublicRoute);

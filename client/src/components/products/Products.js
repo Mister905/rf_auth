@@ -6,6 +6,7 @@ import {
   clear_products,
   delete_product,
 } from "../../actions/products";
+import { load_active_user } from "../../actions/auth";
 import { display_modal } from "../../actions/modal";
 import { Link, withRouter } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
@@ -16,21 +17,31 @@ class Products extends Component {
   };
 
   componentDidMount() {
+    // console.log(this.props.auth);
+
+    // if (this.props.auth.is_authenticated) {
+    //   console.log("TEST");
+    //   this.props.load_active_user();
+    // }
+
     this.props.clear_products();
 
-    if (this.props.auth.is_authenticated) {
-      // Simulate Async
-      setTimeout(this.props.get_products, 5000);
-    }
+    // if (this.props.auth.is_authenticated) {
+    //   // Simulate Async
+    setTimeout(this.props.get_products, 5000);
+    // }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.auth.is_authenticated !== prevProps.auth.is_authenticated) {
-      // Simulate Async
-      setTimeout(this.props.get_products, 5000);
-    }
+    // console.log("TEST1");
+    // if (this.props.auth.is_authenticated !== prevProps.auth.is_authenticated) {
+    //   console.log("TEST2");
+    //   // Simulate Async
+    //   setTimeout(this.props.get_products, 5000);
+    // }
 
     if (this.props.products.products !== prevProps.products.products) {
+      console.log("TEST3");
       this.props.get_products();
     }
   }
@@ -118,6 +129,7 @@ export default compose(
     clear_products,
     display_modal,
     delete_product,
+    load_active_user,
   }),
   withRouter
 )(Products);

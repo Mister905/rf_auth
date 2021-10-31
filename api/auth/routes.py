@@ -23,6 +23,11 @@ def load_active_user():
             "success": 1,
             "user": serialized_user
         })
+    else:
+        return jsonify({
+            "error": 1,
+            "message": "Unable to load active user."
+        })
      
 
 @bp.route("/api/auth/login", methods=["POST"])

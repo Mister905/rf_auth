@@ -43,14 +43,14 @@ export default function (state = initial_state, action) {
         user: null,
         loading_user: true,
       };
-    case AUTH_ERROR:
-      return {
-        ...state,
-        access_token: null,
-        is_authenticated: false,
-        user: null,
-        loading_user: false,
-      };
+    // case AUTH_ERROR:
+    //   return {
+    //     ...state,
+    //     access_token: null,
+    //     is_authenticated: false,
+    //     user: null,
+    //     loading_user: false,
+    //   };
     default:
       return state;
   }
