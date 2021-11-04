@@ -15,7 +15,7 @@ import Update_Product from "./components/update_product/Update_Product";
 import View_Product from "./components/view_product/View_Product";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import PublicRoute from "./components/routing/PublicRoute";
-import Preloader from "./components/preloader/Preloader";
+
 // Actions
 import { load_active_user } from "./actions/auth";
 
@@ -31,7 +31,6 @@ class App extends Component {
   };
 
   render() {
-    
     const { display_modal } = this.props.modal;
 
     return (

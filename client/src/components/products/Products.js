@@ -81,12 +81,6 @@ class Products extends Component {
                 <div className="col m6">
                   <div className="row">
                     <div className="col m6">
-                      {/* <Link
-                        to={`/update_product/${product.id}`}
-                        className="btn"
-                      >
-                        Update
-                      </Link> */}
                       <Link to={`/view_product/${product.id}`} className="btn">
                         View
                       </Link>
