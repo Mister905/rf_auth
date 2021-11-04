@@ -51,15 +51,6 @@ export const login_user = (form_data, history) => async (dispatch) => {
         payload: res.data,
       });
 
-      dispatch({
-        type: DISPLAY_MODAL,
-        payload: {
-          modal_title: "Success",
-          modal_body: "Login Successful",
-          modal_confirmation: "Ok",
-        },
-      });
-
       history.push("/products");
     }
   } catch (error) {

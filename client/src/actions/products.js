@@ -70,6 +70,7 @@ export const clear_product = () => async (dispatch) => {
 };
 
 export const create_product = (form_data, history) => async (dispatch) => {
+
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -79,14 +80,17 @@ export const create_product = (form_data, history) => async (dispatch) => {
   let request_body = JSON.stringify(form_data);
 
   try {
+
     const res = await instance.post("/products", request_body, config);
+
+    console.log(res);
 
     if (res.data.error) {
       dispatch({
         type: DISPLAY_MODAL,
         payload: {
-          modal_title: "Error",
-          modal_body: "Unable to create product",
+          modal_title: "Product Creation Error",
+          modal_body: res.data.message,
           modal_confirmation: "Ok",
         },
       });
@@ -102,6 +106,8 @@ export const create_product = (form_data, history) => async (dispatch) => {
       history.push("/products");
     }
   } catch (error) {
+    console.log("TEST");
+    console.log(error);
     dispatch({
       type: DISPLAY_MODAL,
       payload: {

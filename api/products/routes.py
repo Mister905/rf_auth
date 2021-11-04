@@ -39,7 +39,7 @@ def create_product():
         return jsonify({
             "error": 1,
             "message": "A product with that name already exists."
-        }), 409
+        })
     else:
         type = request.json["type"]
         weight = request.json["weight"]
@@ -101,7 +101,6 @@ def remove_product(id: int):
         }), 202
 
     else:
-
         return jsonify({
             "error": 1,
             "message": "That product does not exist."

@@ -10,41 +10,59 @@ import { load_active_user } from "../../actions/auth";
 import { display_modal } from "../../actions/modal";
 import { Link, withRouter } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
+import M from "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
+import instance from "../../utils/axios";
 
 class Products extends Component {
-  display_modal = () => {
-    this.props.display_modal("Test Title", "Test Body", "Confirm", "Cancel");
-  };
-
   componentDidMount() {
-    // console.log(this.props.auth);
-
-    // if (this.props.auth.is_authenticated) {
-    //   console.log("TEST");
-    //   this.props.load_active_user();
-    // }
-
     this.props.clear_products();
 
-    // if (this.props.auth.is_authenticated) {
-    //   // Simulate Async
-    setTimeout(this.props.get_products, 5000);
-    // }
+    // Simulate Async
+    // setTimeout(this.props.get_products, 5000);
+
+    this.props.get_products();
   }
 
   componentDidUpdate(prevProps) {
-    // console.log("TEST1");
-    // if (this.props.auth.is_authenticated !== prevProps.auth.is_authenticated) {
-    //   console.log("TEST2");
-    //   // Simulate Async
-    //   setTimeout(this.props.get_products, 5000);
-    // }
+    if (this.props.products.product_list !== prevProps.products.product_list) {
+      const options = {
+        onOpenStart: () => {
+          console.log("Open Start");
+        },
+        onOpenEnd: () => {
+          console.log("Open End");
+        },
+        onCloseStart: () => {
+          console.log("Close Start");
+        },
+        onCloseEnd: () => {
+          console.log("Close End");
+        },
+        inDuration: 250,
+        outDuration: 250,
+        opacity: 0.5,
+        dismissible: false,
+        startingTop: "4%",
+        endingTop: "10%",
+      };
 
-    if (this.props.products.products !== prevProps.products.products) {
-      console.log("TEST3");
+      var elems = document.querySelectorAll(".modal");
+
+      M.Modal.init(elems, options);
+    }
+
+    if (
+      this.props.products.loading_products !==
+      prevProps.products.loading_products
+    ) {
       this.props.get_products();
     }
   }
+
+  display_modal = () => {
+    this.props.display_modal("Test Title", "Test Body", "Confirm", "Cancel");
+  };
 
   handle_delete_product = (product_id) => {
     this.props.delete_product(product_id);
@@ -63,20 +81,46 @@ class Products extends Component {
                 <div className="col m6">
                   <div className="row">
                     <div className="col m6">
-                      <Link
+                      {/* <Link
                         to={`/update_product/${product.id}`}
                         className="btn"
                       >
                         Update
+                      </Link> */}
+                      <Link to={`/view_product/${product.id}`} className="btn">
+                        View
                       </Link>
                     </div>
                     <div className="col m6">
-                      <button
-                        className="btn"
-                        onClick={(e) => this.handle_delete_product(product.id)}
+                      <a
+                        className="waves-effect waves-light btn modal-trigger"
+                        data-target={`modal_${product.id}`}
                       >
                         Delete
-                      </button>
+                      </a>
+
+                      <div id={`modal_${product.id}`} className="modal">
+                        <div className="modal-content">
+                          <h4>Delete Product</h4>
+                          <p>
+                            Are you sure you want to delete product:{" "}
+                            {product.name}
+                          </p>
+                        </div>
+                        <div className="modal-footer">
+                          <a className="modal-close waves-effect waves-red btn-flat">
+                            Cancel
+                          </a>
+                          <a
+                            onClick={() =>
+                              this.handle_delete_product(product.id)
+                            }
+                            className="modal-close waves-effect waves-green btn-flat"
+                          >
+                            Delete
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
