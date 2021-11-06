@@ -1,17 +1,23 @@
-import React, { Component } from "react";
-import M from "materialize-css";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { withRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { close_modal } from "../../actions/modal";
+import M from "materialize-css";
 
-class Modal extends Component {
-  componentDidMount() {
+function Modal() {
+
+  const dispatch = useDispatch();
+
+  // const modal = useSelector(state => state.modal);
+
+  let { modal_title, modal_body, modal_decline, modal_confirmation } = useSelector(state => state.modal);
+
+  useEffect(() => {
+
     const options = {
       onCloseEnd: () => {
         instance.close();
         instance.destroy();
-        this.props.close_modal();
+        dispatch(close_modal());
       },
       inDuration: 250,
       outDuration: 250,
@@ -21,48 +27,37 @@ class Modal extends Component {
       endingTop: "10%",
     };
 
-    M.Modal.init(this.Modal, options);
+    var elems = document.querySelectorAll(".modal");
 
-    let instance = M.Modal.getInstance(this.Modal);
+    M.Modal.init(elems, options);
+
+    let instance = M.Modal.getInstance(document.querySelector("#test"));
 
     instance.open();
-  }
 
-  render() {
-    const { modal_title, modal_body, modal_confirmation, modal_decline } = this.props.modal;
-    return (
-      <div>
-        <div
-          ref={(Modal) => {
-            this.Modal = Modal;
-          }}
-          className="modal"
-        >
-          <div className="modal-content">
-            <h4>{modal_title}</h4>
-            <p>{modal_body}</p>
-          </div>
-          <div className="modal-footer">
-            {modal_decline && (
-              <a className="modal-close waves-effect waves-red btn-flat">
-                {modal_decline}
-              </a>
-            )}
-            <a className="modal-close waves-effect waves-green btn-flat">
-              {modal_confirmation}
-            </a>
-          </div>
-        </div>
+  }, [close_modal]);
+
+  return (
+    <div
+      id="test"
+      className="modal"
+    >
+      <div className="modal-content">
+        <h4>{modal_title}</h4>
+        <p>{modal_body}</p>
       </div>
-    );
-  }
+      <div className="modal-footer">
+        {modal_decline && (
+          <a className="modal-close waves-effect waves-red btn-flat">
+            {modal_decline}
+          </a>
+        )}
+        <a className="modal-close waves-effect waves-green btn-flat">
+          {modal_confirmation}
+        </a>
+      </div>
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  modal: state.modal,
-});
-
-export default compose(
-  connect(mapStateToProps, { close_modal }),
-  withRouter
-)(Modal);
+export default Modal;
