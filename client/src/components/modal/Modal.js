@@ -7,8 +7,6 @@ function Modal() {
 
   const dispatch = useDispatch();
 
-  // const modal = useSelector(state => state.modal);
-
   let { modal_title, modal_body, modal_decline, modal_confirmation } = useSelector(state => state.modal);
 
   useEffect(() => {
