@@ -1,17 +1,22 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { compose } from "redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { logout_user } from "../../actions/auth";
 
-class Header extends Component {
-  handle_logout = () => {
-    this.props.logout_user(this.props.history);
-  };
+function Header() {
+  const history = useHistory();
 
-  render() {
-    const { is_authenticated } = this.props.auth;
-    return (
+  const dispatch = useDispatch();
+
+  const { is_authenticated } = useSelector((state) => state.auth);
+
+  function handle_logout() {
+    dispatch(logout_user(history));
+  }
+
+  return (
+    <div>
       <nav>
         <div className="nav-wrapper">
           <Link to={"/"} className="brand-logo">
@@ -20,7 +25,7 @@ class Header extends Component {
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
               {is_authenticated ? (
-                <a onClick={this.handle_logout}>Logout</a>
+                <a onClick={handle_logout}>Logout</a>
               ) : (
                 <Link to={"/login"}>Login</Link>
               )}
@@ -28,15 +33,8 @@ class Header extends Component {
           </ul>
         </div>
       </nav>
-    );
-  }
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-export default compose(
-  connect(mapStateToProps, { logout_user }),
-  withRouter
-)(Header);
+export default Header;
