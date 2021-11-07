@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   get_products,
-  clear_products,
   delete_product,
 } from "../../actions/products";
 import { useDispatch, useSelector } from "react-redux";
