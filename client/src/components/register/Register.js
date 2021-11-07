@@ -107,6 +107,16 @@ class Register extends Component {
             </div>
           </div>
         </Form>
+        <div className="row registration-row">
+          <div className="col m12">
+            <div className="center-align">
+              Already registered?
+              <Link to={"/login"} className="register-today">
+                Login
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
