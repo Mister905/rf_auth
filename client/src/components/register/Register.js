@@ -7,6 +7,7 @@ import { register_user } from "../../actions/auth";
 import { useHistory } from "react-router-dom";
 
 function Register() {
+  
   const history = useHistory();
   const dispatch = useDispatch();
 

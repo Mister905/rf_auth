@@ -1,76 +1,62 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
+import React, { useEffect } from "react";
 import {
   get_products,
   clear_products,
   delete_product,
 } from "../../actions/products";
-import { load_active_user } from "../../actions/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { display_modal } from "../../actions/modal";
 import { Link, withRouter } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
-import instance from "../../utils/axios";
 
-class Products extends Component {
-  componentDidMount() {
-    this.props.clear_products();
 
-    // Simulate Async
-    // setTimeout(this.props.get_products, 5000);
+function Products() {
 
-    this.props.get_products();
+  const dispatch = useDispatch();
+
+  const { product_list, loading_products } = useSelector((state) => state.products);
+
+  useEffect(() => {
+
+    dispatch(get_products());
+
+    const options = {
+      onOpenStart: () => {
+        console.log("Open Start");
+      },
+      onOpenEnd: () => {
+        console.log("Open End");
+      },
+      onCloseStart: () => {
+        console.log("Close Start");
+      },
+      onCloseEnd: () => {
+        console.log("Close End");
+      },
+      inDuration: 250,
+      outDuration: 250,
+      opacity: 0.5,
+      dismissible: false,
+      startingTop: "4%",
+      endingTop: "10%",
+    };
+
+    var elems = document.querySelectorAll(".modal");
+
+    M.Modal.init(elems, options);
+  }, [loading_products]);
+
+  function handle_display_modal() {
+    dispatch(display_modal("Test Title", "Test Body", "Confirm", "Cancel"));
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.products.product_list !== prevProps.products.product_list) {
-      const options = {
-        onOpenStart: () => {
-          console.log("Open Start");
-        },
-        onOpenEnd: () => {
-          console.log("Open End");
-        },
-        onCloseStart: () => {
-          console.log("Close Start");
-        },
-        onCloseEnd: () => {
-          console.log("Close End");
-        },
-        inDuration: 250,
-        outDuration: 250,
-        opacity: 0.5,
-        dismissible: false,
-        startingTop: "4%",
-        endingTop: "10%",
-      };
-
-      var elems = document.querySelectorAll(".modal");
-
-      M.Modal.init(elems, options);
-    }
-
-    if (
-      this.props.products.loading_products !==
-      prevProps.products.loading_products
-    ) {
-      this.props.get_products();
-    }
+  function handle_delete_product(product_id) {
+    dispatch(delete_product(product_id));
   }
 
-  display_modal = () => {
-    this.props.display_modal("Test Title", "Test Body", "Confirm", "Cancel");
-  };
-
-  handle_delete_product = (product_id) => {
-    this.props.delete_product(product_id);
-  };
-
-  output_products = () => {
-    const { product_list } = this.props.products;
-
+  function output_products() {
     return (
       <ul className="collection">
         {product_list.map(function (product) {
@@ -107,7 +93,7 @@ class Products extends Component {
                           </a>
                           <a
                             onClick={() =>
-                              this.handle_delete_product(product.id)
+                              handle_delete_product(product.id)
                             }
                             className="modal-close waves-effect waves-green btn-flat"
                           >
@@ -121,53 +107,36 @@ class Products extends Component {
               </div>
             </li>
           );
-        }, this)}
+        })}
       </ul>
     );
-  };
+  }
 
-  render() {
-    const { loading_products } = this.props.products;
-    return (
-      <div className="container mt-50">
-        <div className="row">
-          <div className="col m4 offset-m8">
-            <div className="row">
-              <div className="col m6">
-                <button onClick={this.display_modal} className="btn">
-                  Display Modal
-                </button>
-              </div>
-              <div className="col m6">
-                <Link to={"/create_product"} className="btn">
-                  Create Product
-                </Link>
-              </div>
+  return (
+    <div className="container mt-50">
+      <div className="row">
+        <div className="col m4 offset-m8">
+          <div className="row">
+            <div className="col m6">
+              <button onClick={handle_display_modal} className="btn">
+                Display Modal
+              </button>
+            </div>
+            <div className="col m6">
+              <Link to={"/create_product"} className="btn">
+                Create Product
+              </Link>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col m6 offset-m3 align-center">
-            {loading_products ? <Preloader /> : this.output_products()}
-          </div>
+      </div>
+      <div className="row">
+        <div className="col m6 offset-m3 align-center">
+          {loading_products ? <Preloader /> : output_products()}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  products: state.products,
-  auth: state.auth,
-});
-
-export default compose(
-  connect(mapStateToProps, {
-    get_products,
-    clear_products,
-    display_modal,
-    delete_product,
-    load_active_user,
-  }),
-  withRouter
-)(Products);
+export default Products;

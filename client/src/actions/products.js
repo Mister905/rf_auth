@@ -83,8 +83,6 @@ export const create_product = (form_data, history) => async (dispatch) => {
 
     const res = await instance.post("/products", request_body, config);
 
-    console.log(res);
-
     if (res.data.error) {
       dispatch({
         type: DISPLAY_MODAL,
@@ -106,8 +104,6 @@ export const create_product = (form_data, history) => async (dispatch) => {
       history.push("/products");
     }
   } catch (error) {
-    console.log("TEST");
-    console.log(error);
     dispatch({
       type: DISPLAY_MODAL,
       payload: {
