@@ -1,5 +1,4 @@
 import { DISPLAY_MODAL, CLOSE_MODAL } from "./types";
-import axios from "axios";
 
 export const display_modal =
   (modal_title, modal_body, modal_confirmation, modal_decline) =>

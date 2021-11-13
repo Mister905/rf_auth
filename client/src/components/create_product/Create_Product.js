@@ -1,125 +1,79 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { Link, withRouter } from "react-router-dom";
-import { withFormik, Form, Field } from "formik";
-import * as Yup from "yup";
+import React from "react";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import { create_product } from "../../actions/products";
+import { useHistory } from "react-router-dom";
 
-class Create_Product extends Component {
-  render() {
-    const { values, errors, touched } = this.props;
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col m12 center-align">
-            <h1>Create Product</h1>
-          </div>
+function Create_Product() {
+
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const { handleSubmit, getFieldProps } = useFormik({
+    initialValues: {
+      name: "",
+      type: "",
+      weight: "",
+      inventory_count: "",
+    },
+    onSubmit: (values) => {
+      dispatch(create_product(values, history));
+    },
+  });
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="row mt-50">
+        <div className="input-field col m4 offset-m4">
+          <label htmlFor="name" className="active custom-label">
+            Name
+          </label>
+          <input id="name" type="text" name="name" {...getFieldProps("name")} />
         </div>
-        <Form>
-          <div className="row">
-            <div className="input-field col m4 offset-m4">
-              <label htmlFor="name" className="active custom-label">
-                Name
-              </label>
-              <Field
-                id="name"
-                type="text"
-                name="name"
-                className={errors.name ? "invalid" : ""}
-              />
-              {errors.name && (
-                <span className="custom-helper-error">{errors.name}</span>
-              )}
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-field col m4 offset-m4">
-              <label htmlFor="type" className="active custom-label">
-                Type
-              </label>
-              <Field
-                id="type"
-                type="text"
-                name="type"
-                className={errors.type ? "invalid" : ""}
-              />
-              {errors.type && (
-                <span className="custom-helper-error">{errors.type}</span>
-              )}
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-field col m4 offset-m4">
-              <label htmlFor="weight" className="active custom-label">
-                Weight
-              </label>
-              <Field
-                id="weight"
-                type="text"
-                name="weight"
-                className={errors.weight ? "invalid" : ""}
-              />
-              {errors.weight && (
-                <span className="custom-helper-error">{errors.weight}</span>
-              )}
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-field col m4 offset-m4">
-              <label htmlFor="inventory_count" className="active custom-label">
-                Inventory Count
-              </label>
-              <Field
-                id="inventory_count"
-                type="number"
-                name="inventory_count"
-                className={errors.inventory_count ? "invalid" : ""}
-              />
-              {errors.inventory_count && (
-                <span className="custom-helper-error">
-                  {errors.inventory_count}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col m4 offset-m4">
-              <button type="submit" className="btn right">
-                Create
-              </button>
-            </div>
-          </div>
-        </Form>
       </div>
-    );
-  }
+      <div className="row mt-50">
+        <div className="input-field col m4 offset-m4">
+          <label htmlFor="type" className="active custom-label">
+            Type
+          </label>
+          <input id="type" type="text" name="type" {...getFieldProps("type")} />
+        </div>
+      </div>
+      <div className="row mt-50">
+        <div className="input-field col m4 offset-m4">
+          <label htmlFor="weight" className="active custom-label">
+            Weight
+          </label>
+          <input
+            id="weight"
+            type="text"
+            name="weight"
+            {...getFieldProps("weight")}
+          />
+        </div>
+      </div>
+      <div className="row mt-50">
+        <div className="input-field col m4 offset-m4">
+          <label htmlFor="inventory_count" className="active custom-label">
+            Inventory Count
+          </label>
+          <input
+            id="inventory_count"
+            type="number"
+            name="inventory_count"
+            {...getFieldProps("inventory_count")}
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col m4 offset-m4">
+          <button type="submit" className="btn right">
+            Create
+          </button>
+        </div>
+      </div>
+    </form>
+  );
 }
 
-const FormikForm = withFormik({
-  mapPropsToValues({ name, type, weight, inventory_count }) {
-    return {
-      name: name || "",
-      type: type || "",
-      weight: weight || "",
-      inventory_count: inventory_count || "",
-    };
-  },
-
-  validationSchema: Yup.object().shape({
-    name: Yup.string().required("Name field is Required"),
-    type: Yup.string().required("Type field is Required"),
-    weight: Yup.string().required("Weight field is Required"),
-    inventory_count: Yup.string().required("Inventory count field is Required"),
-  }),
-  validateOnBlur: false,
-  validateOnChange: false,
-  handleSubmit: (values, props) => {
-    props.props.create_product(values, props.props.history);
-  },
-})(Create_Product);
-
-export default compose(
-  connect(null, { create_product }),
-  withRouter
-)(FormikForm);
+export default Create_Product;

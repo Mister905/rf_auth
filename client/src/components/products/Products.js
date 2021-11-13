@@ -5,7 +5,7 @@ import {
 } from "../../actions/products";
 import { useDispatch, useSelector } from "react-redux";
 import { display_modal } from "../../actions/modal";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";

@@ -2,8 +2,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  USER_LOADED,
-  AUTH_ERROR,
+  USER_LOADED
 } from "../actions/types";
 
 const initial_state = {

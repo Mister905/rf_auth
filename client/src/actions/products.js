@@ -172,7 +172,7 @@ export const update_product = (form_data, history) => async (dispatch) => {
 
 export const delete_product = (product_id) => async (dispatch) => {
   try {
-    const res = await instance.delete(`/products/${product_id}`);
+    await instance.delete(`/products/${product_id}`);
     dispatch({
       type: DELETE_PRODUCT,
     });

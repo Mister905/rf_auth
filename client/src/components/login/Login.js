@@ -18,7 +18,6 @@ function Login() {
       password: "",
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().required("Email is Required"),
       email: Yup.string().email("Invalid email").required("Email is Required"),
       password: Yup.string().required("Password is Required"),
     }),

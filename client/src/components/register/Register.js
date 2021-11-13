@@ -22,8 +22,7 @@ function Register() {
     validationSchema: Yup.object().shape({
       first_name: Yup.string().required("First Name is Required"),
       last_name: Yup.string().required("Last Name is Required"),
-      email: Yup.string().required("Email is Required"),
-      email: Yup.string().email("Invalid email").required("Required"),
+      email: Yup.string().email("Invalid email").required("Email is Required"),
       password: Yup.string().required("Password is Required"),
       confirm_password: Yup.string().oneOf(
         [Yup.ref("password"), null],
