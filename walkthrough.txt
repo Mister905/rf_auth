@@ -301,3 +301,34 @@ Seeding the DB
 flask db_create
 
 flask db_seed
+
+https://www.atlassian.com/git/tutorials/using-branches
+
+* Create branch
+
+git branch ＜new-branch＞
+
+* Switch to branch
+
+git checkout ＜new-branch＞
+
+* Create and switch to branch ( convenience )
+
+git checkout -b ＜new-branch＞
+
+* List Branches
+
+git branch
+
+* hooks
+  master
+
+git checkout master
+
+ jamesm  ~/rf_auth/client   hooks ±  git add .
+ jamesm  ~/rf_auth/client   hooks ±✚  git commit -m "Hooks refactor for App and Login"
+[hooks 7d2eb33] Hooks refactor for App and Login
+ 2 files changed, 145 insertions(+), 169 deletions(-)
+ rewrite client/src/App.js (66%)
+ rewrite client/src/components/login/Login.js (92%)
+ jamesm  ~/rf_auth/client   hooks ±  git push origin hooks
