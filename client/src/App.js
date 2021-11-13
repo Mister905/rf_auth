@@ -15,6 +15,7 @@ import Update_Product from "./components/update_product/Update_Product";
 import View_Product from "./components/view_product/View_Product";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import PublicRoute from "./components/routing/PublicRoute";
+import PropTypes from 'prop-types';
 
 // Actions
 import { load_active_user } from "./actions/auth";
@@ -31,6 +32,7 @@ class App extends Component {
   };
 
   render() {
+
     const { display_modal } = this.props.modal;
 
     return (
@@ -62,6 +64,13 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  auth: PropTypes.object,
+  modal: PropTypes.object,
+  display_modal: PropTypes.bool,
+  is_authenticated: PropTypes.bool
+};
 
 const mapStateToProps = (state) => ({
   auth: state.auth,

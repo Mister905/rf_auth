@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { get_product, update_product, clear_product } from "../../actions/products";
 import Preloader from "../preloader/Preloader";
+import PropTypes from 'prop-types';
+
 
 class Update_Product_Form extends Component {
+
   render() {
-    const { values, errors, touched } = this.props;
+    const { errors } = this.props;
     return (
       <div className="container">
         <div className="row">
@@ -99,7 +102,7 @@ class Update_Product_Form extends Component {
 
 const Update_Product_HOC = withFormik({
   mapPropsToValues: (props) => {
-    const { id, name, type, weight, inventory_count } =
+    const { name, type, weight, inventory_count } =
       props.props.products.product;
     return {
       name: name || "",
@@ -147,6 +150,16 @@ class Update_Product extends Component {
     }
   }
 }
+
+Update_Product.propTypes = {
+  products: PropTypes.object,
+  loading_product: PropTypes.bool,
+  product: PropTypes.object,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  weight: PropTypes.string,
+  inventory_count: PropTypes.number
+};
 
 const mapStateToProps = (state) => ({
   products: state.products,

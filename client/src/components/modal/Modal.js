@@ -4,9 +4,13 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { close_modal } from "../../actions/modal";
+import PropTypes from 'prop-types';
+
 
 class Modal extends Component {
+
   componentDidMount() {
+    
     const options = {
       onCloseEnd: () => {
         instance.close();
@@ -57,6 +61,14 @@ class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  modal: PropTypes.object,
+  modal_title: PropTypes.string,
+  modal_body: PropTypes.string,
+  modal_confirmation: PropTypes.string,
+  modal_decline: PropTypes.string
+};
 
 const mapStateToProps = (state) => ({
   modal: state.modal,

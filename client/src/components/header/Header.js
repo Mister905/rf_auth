@@ -3,6 +3,8 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { logout_user } from "../../actions/auth";
+import PropTypes from 'prop-types';
+
 
 class Header extends Component {
   handle_logout = () => {
@@ -35,6 +37,11 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
+
+Header.propTypes = {
+  auth: PropTypes.object,
+  is_authenticated: PropTypes.bool
+};
 
 export default compose(
   connect(mapStateToProps, { logout_user }),

@@ -5,6 +5,8 @@ import { Link, withRouter } from "react-router-dom";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { login_user } from "../../actions/auth";
+import PropTypes from 'prop-types';
+
 
 class Login extends Component {
   render() {
@@ -91,5 +93,12 @@ const FormikForm = withFormik({
     props.props.login_user(values, props.props.history);
   },
 })(Login);
+
+Login.propTypes = {
+  first_name: PropTypes.string,
+  last_name: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.string
+};
 
 export default compose(connect(null, { login_user }), withRouter)(FormikForm);

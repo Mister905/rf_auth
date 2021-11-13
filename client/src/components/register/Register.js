@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { register_user } from "../../actions/auth";
+import PropTypes from 'prop-types';
+
 
 class Register extends Component {
   render() {
@@ -156,6 +158,14 @@ const FormikForm = withFormik({
     props.props.register_user(values, props.props.history);
   },
 })(Register);
+
+Register.propTypes = {
+  first_name: PropTypes.string,
+  last_name: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.string,
+  confirm_password: PropTypes.string,
+};
 
 export default compose(
   connect(null, { register_user }),

@@ -5,10 +5,13 @@ import { Link, withRouter } from "react-router-dom";
 import { withFormik, Form, Field } from "formik";
 import { get_product, clear_product } from "../../actions/products";
 import Preloader from "../preloader/Preloader";
+import PropTypes from 'prop-types';
+
 
 class View_Product_Form extends Component {
+
   render() {
-    const { values, errors, touched } = this.props;
+    const { errors } = this.props;
     return (
       <Form>
         <div className="row mt-50">
@@ -88,7 +91,7 @@ class View_Product_Form extends Component {
 
 const View_Product_HOC = withFormik({
   mapPropsToValues: (props) => {
-    const { id, name, type, weight, inventory_count } =
+    const { name, type, weight, inventory_count } =
       props.props.products.product;
     return {
       name: name || "",
@@ -133,6 +136,17 @@ class View_Product extends Component {
     }
   }
 }
+
+View_Product.propTypes = {
+  products: PropTypes.object,
+  auth: PropTypes.object,
+  loading_product: PropTypes.bool,
+  product: PropTypes.object,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  weight: PropTypes.string,
+  inventory_count: PropTypes.number
+};
 
 const mapStateToProps = (state) => ({
   products: state.products,

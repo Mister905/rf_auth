@@ -12,19 +12,22 @@ import { Link, withRouter } from "react-router-dom";
 import Preloader from "../preloader/Preloader";
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
-import instance from "../../utils/axios";
+import PropTypes from 'prop-types';
+
 
 class Products extends Component {
+
   componentDidMount() {
     this.props.clear_products();
 
     // Simulate Async
-    // setTimeout(this.props.get_products, 5000);
+    setTimeout(this.props.get_products, 5000);
 
-    this.props.get_products();
+    // this.props.get_products();
   }
 
   componentDidUpdate(prevProps) {
+    
     if (this.props.products.product_list !== prevProps.products.product_list) {
       const options = {
         onOpenStart: () => {
@@ -69,6 +72,7 @@ class Products extends Component {
   };
 
   output_products = () => {
+
     const { product_list } = this.props.products;
 
     return (
@@ -155,6 +159,13 @@ class Products extends Component {
     );
   }
 }
+
+Products.propTypes = {
+  products: PropTypes.object,
+  auth: PropTypes.object,
+  loading_products: PropTypes.bool,
+  product_list: PropTypes.array
+};
 
 const mapStateToProps = (state) => ({
   products: state.products,
